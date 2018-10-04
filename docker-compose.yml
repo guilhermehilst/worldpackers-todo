@@ -5,6 +5,13 @@ services:
     image: postgres
     volumes:
       - db:/var/lib/postgresql/data
+
+  redis:
+    image: 'redis:4.0-alpine'
+    command: redis-server
+    volumes:
+      - 'redis:/data'
+
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -16,9 +23,27 @@ services:
     environment:
       - BUNDLE_PATH=/bundle/vendor
       - BUNDLE_APP_CONFIG=/myapp/.bundle
+      - JOB_WORKER_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/myapp
+      - bundle_path:/bundle
+    environment:
+      - BUNDLE_PATH=/bundle/vendor
+      - BUNDLE_APP_CONFIG=/myapp/.bundle
+      - JOB_WORKER_URL=redis://redis:6379/0
 
     depends_on:
       - db
+      - redis
+
 volumes:
   bundle_path:
   db:
+  redis:
