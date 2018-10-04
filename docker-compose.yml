@@ -10,7 +10,7 @@ services:
     image: 'redis:4.0-alpine'
     command: redis-server
     volumes:
-      - 'redis:/data'
+      - redis:/data
 
   web:
     build: .
@@ -27,6 +27,7 @@ services:
     depends_on:
       - db
       - redis
+      - mailcatcher
 
   sidekiq:
     build: .
@@ -42,6 +43,13 @@ services:
     depends_on:
       - db
       - redis
+      - mailcatcher
+
+  mailcatcher:
+    image: hinshun/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
 
 volumes:
   bundle_path:

@@ -34,6 +34,7 @@ gem 'bootstrap', '~> 4.1.3'
 gem 'jquery-rails'
 gem 'devise', '~> 4.5'
 gem 'sidekiq'
+gem 'mailcatcher'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
