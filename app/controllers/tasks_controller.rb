@@ -47,6 +47,7 @@ class TasksController < ApplicationController
 
   def complete
     @task.update_attribute(:completed, true)
+    TrackingEventWorker.perform_async(@task.id) 
 
     respond_to do |format|
       format.html { redirect_to tasks_path, notice: "Task #{@task.title} was successfully completed." }

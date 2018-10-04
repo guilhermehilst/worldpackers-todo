@@ -129,5 +129,15 @@ RSpec.describe "Tasks", type: :request do
       expect(response).to render_template(:index)
       expect(response.body).to include("Task #{task.title} was successfully completed.")
     end
+
+    it 'calls TackingEvent Worker with the right parameters' do
+      user = create(:user)
+      task = create(:task, user: user)
+      sign_in user
+
+      expect(TrackingEventWorker).to receive(:perform_async).with(task.id)
+
+      put "/tasks/#{task.id}/complete"
+    end
   end
 end
