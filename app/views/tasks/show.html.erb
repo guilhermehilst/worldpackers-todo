@@ -1,0 +1,18 @@
+<div class="container mt-3">
+  <div class="page-header">
+    <h2>
+      <strong>Title:</strong>
+      <%= @task.title %>
+    </h2>
+    <p>
+    <strong>Completed:</strong>
+    <%= @task.completed %>
+    </p>
+  </div>
+</div>
+
+
+<div class="container">
+  <%= link_to 'Edit', edit_task_path(@task) %>
+</div>
+

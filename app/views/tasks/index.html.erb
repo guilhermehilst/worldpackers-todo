@@ -1,0 +1,36 @@
+<div class="container mt-3">
+  <div class="page-header">
+    <h2>Tasks</h2>
+  </div>
+</div>
+
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Completed?</th>
+        <th>Created at</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.completed %></td>
+          <td><%= task.created_at.strftime('%d/%m/%Y -  %H:%M:%S') %></td>
+          <td>
+            <%= link_to 'Show', task, class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Edit', edit_task_path(task), class: 'btn btn-primary btn-sm'  %>
+            <%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'  %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody> 
+  </table>
+
+  <br>
+
+  <%= link_to 'New Task', new_task_path %>
+</div>
