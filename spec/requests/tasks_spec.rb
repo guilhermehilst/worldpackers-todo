@@ -82,6 +82,7 @@ RSpec.describe "Tasks", type: :request do
       expect(response.body).to include("Task was successfully updated.")
     end
   end
+
   describe "DELETE /tasks/:id" do
     it "destroy a task" do
       user = create(:user)
@@ -103,6 +104,30 @@ RSpec.describe "Tasks", type: :request do
 
       expect(response).to render_template(:index)
       expect(response.body).to include("Task was successfully destroyed.")
+    end
+  end
+
+  describe "PUT /tasks/:id/complete" do
+    it "update task completed to true" do
+      user = create(:user)
+      task = create(:task, title: 'old task', user: user, completed: false)
+      sign_in user
+
+      put "/tasks/#{task.id}/complete"
+
+      expect(task.reload.completed).to eq(true)
+    end
+
+    it 'redirects to task index page' do
+      user = create(:user)
+      task = create(:task, title: 'old task', user: user)
+      sign_in user
+
+      put "/tasks/#{task.id}/complete"
+      follow_redirect!
+
+      expect(response).to render_template(:index)
+      expect(response.body).to include("Task #{task.title} was successfully completed.")
     end
   end
 end

@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete]
   before_action :authenticate_user!
 
   def index
@@ -42,6 +42,14 @@ class TasksController < ApplicationController
     @task.destroy
     respond_to do |format|
       format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+    end
+  end
+
+  def complete
+    @task.update_attribute(:completed, true)
+
+    respond_to do |format|
+      format.html { redirect_to tasks_path, notice: "Task #{@task.title} was successfully completed." }
     end
   end
 
