@@ -15,15 +15,17 @@ RSpec.describe EventCreator do
       time = Time.zone.now
       allow_any_instance_of(Task).to receive(:updated_at).and_return(time)
 
-      task = create(:task)
+      user = create(:user, email: 'nice-email@email.com')
+      task = create(:task, user: user)
 
       event = described_class.call(task.id)
 
       expect(event).to have_attributes(task: task,
                                        event_type: 'task completion',
-                                       completed_at: time,
                                        payload: { 'colour' => 'nice colour',
-                                                  'phrase' => 'nice phrase' })
+                                                  'phrase' => 'nice phrase',
+                                                  'completed_at' => time.iso8601(3),
+                                                  'user_email' => 'nice-email@email.com'})
     end
   end
 end

@@ -20,9 +20,10 @@ class EventCreator
 
     Event.create(task: task,
                  event_type: 'task completion',
-                 completed_at: task.updated_at,
                  payload: { colour: COLOURS.sample,
-                            phrase: PHRASES.sample })
+                            phrase: PHRASES.sample,
+                            completed_at: task.updated_at,
+                            user_email: task.user.email })
 
   end
 end
