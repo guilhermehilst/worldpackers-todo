@@ -1,6 +1,6 @@
 sidekiq_config = { 
     url: ENV['JOB_WORKER_URL'],
-    size: 2
+    size: 10
 }
 
 Sidekiq.configure_server do |config|
